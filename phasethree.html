@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<head>
+<style>
+h1 {
+  font-size: 40px;
+  font-color: black;
+  font-family: Georgia;
+}
+.easy {
+  background-color: lime;
+  width: 80px;
+  margin: 5px;
+}
+.medium {
+  background-color: yellow;
+  width: 80px;
+  margin: 5px;
+}
+.hard {
+  background-color: red;
+  width: 80px;
+  margin: 5px;
+}
+.buttons {
+  width: 300px;
+  height: 40px;
+}
+.coins {
+  color : gold;
+  font-family: Verdana;
+  font-size : 25px;
+}
+</style>
+</head>
+<title>Upgrade Adventure</title>
+<body>
+  <h1>Upgrade Adventure</h1>
+  <p class="coins" id="coinP">0 Coins</p>
+  <p id="output">Click a button to play!</p>
+  <div class="buttons">
+    <button onclick="buttonClick(30)" class="easy"><b>Easy</b></button>
+    <button onclick="buttonClick(50)" class="medium"><b>Medium</b></button>
+    <button onclick="buttonClick(70)" class="hard"><b>Hard</b></button>
+  </div>
+  <div>
+    <p id="winP">0 Wins</p>
+    <p id="lossP">0 Losses</p>
+  </div>
+  <p id="highScoreP">High Score: 0 Coins</p>
+  <p id="lowScoreP">Lowest Score: 0 Coins</p>
+  <button onclick="reset()" style="background-color: darkred; color: white; margin-top: 150px"><b>Reset</b></button>
+</body>
+</html>
+<script>
+var outputText = document.getElementById("output")
+var coinText = document.getElementById("coinP")
+var winText = document.getElementById("winP")
+var lossText = document.getElementById("lossP")
+var highScoreText = document.getElementById("highScoreP")
+var lowScoreText = document.getElementById("lowScoreP")
+var coins = 0
+var wins = 0
+var losses = 0
+var highScore = 0
+var lowScore = 0
+
+function buttonClick(dif) {
+  var random = (Math.random() * 100)
+  if (dif == 30) {
+    if (random >= dif){
+      outputText.innerHTML = "Win"
+      easyWin()
+    } else {
+      outputText.innerHTML = "Lose"
+      easyLoss()
+    }
+  } else if (dif == 50) {
+      if (random >= dif){
+        outputText.innerHTML = "Win"
+        mediumWin()
+      } else {
+        outputText.innerHTML = "Lose"
+        mediumLoss()
+      }
+  } else {
+      if (random >= dif){
+        outputText.innerHTML = "Win"
+        hardWin()
+      } else {
+        outputText.innerHTML = "Lose"
+        hardLoss()
+      }
+  }
+}
+function easyWin() {
+  wins += 1
+  winText.innerHTML = wins + " Wins"
+  outputText.style.color = "Green"
+  var didWinBig = (Math.random() * 100)
+  if (didWinBig >= 90) {
+    if (didWinBig == 100) {
+      coins += 10
+      outputText.innerHTML = "Massive Win"
+    } else {
+      coins += 5
+      outputText.innerHTML = "Great Win"
+    }
+  } else {
+    coins += 1
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins > highScore) {
+    highScoreText.innerHTML = "High Score: " + coins + " Coins"
+    highScore = coins
+  }
+}
+function mediumWin() {
+  wins += 1
+  winText.innerHTML = wins + " Wins"
+  outputText.style.color = "Green"
+  var didWinBig = (Math.random() * 100)
+  if (didWinBig >= 90) {
+    if (didWinBig == 100) {
+      coins += 20
+      outputText.innerHTML = "Massive Win"
+    } else {
+      coins += 8
+      outputText.innerHTML = "Great Win"
+    }
+  } else {
+    coins += 3
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins > highScore) {
+    highScoreText.innerHTML = "High Score: " + coins + " Coins"
+    highScore = coins
+  }
+}
+function hardWin() {
+  wins += 1
+  winText.innerHTML = wins + " Wins"
+  outputText.style.color = "Green"
+  var didWinBig = (Math.random() * 100)
+  if (didWinBig >= 90) {
+    if (didWinBig == 100) {
+      coins += 30
+      outputText.innerHTML = "Massive Win"
+    } else {
+      coins += 15
+      outputText.innerHTML = "Great Win"
+    }
+  } else {
+    coins += 5
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins > highScore) {
+    highScoreText.innerHTML = "High Score: " + coins + " Coins"
+    highScore = coins
+  }
+}
+function easyLoss() {
+  losses += 1
+  lossText.innerHTML = losses + " Losses"
+  outputText.style.color = "Red"
+  var didLoseBig = (Math.random() * 100)
+  if (didLoseBig >= 90) {
+    if (didLoseBig == 100) {
+      coins -= 3
+      outputText.innerHTML = "Critical Loss"
+    } else {
+      coins -= 2
+      outputText.innerHTML = "Bad Loss"
+
+    }
+  } else {
+    coins -= 1
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins < lowScore) {
+    lowScoreText.innerHTML = "Lowest Score: " + coins + " Coins"
+    lowScore = coins
+  }
+}
+function mediumLoss() {
+  losses += 1
+  lossText.innerHTML = losses + " Losses"
+  outputText.style.color = "Red"
+  var didLoseBig = (Math.random() * 100)
+  if (didLoseBig >= 90) {
+    if (didLoseBig == 100) {
+      coins -= 6
+      outputText.innerHTML = "Critical Loss"
+    } else {
+      coins -= 3
+      outputText.innerHTML = "Bad Loss"
+    }
+  } else {
+    coins -= 2
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins < lowScore) {
+    lowScoreText.innerHTML = "Lowest Score: " + coins + " Coins"
+    lowScore = coins
+  }
+}
+function hardLoss() {
+  losses += 1
+  lossText.innerHTML = losses + " Losses"
+  outputText.style.color = "Red"
+
+  var didLoseBig = (Math.random() * 100)
+  if (didLoseBig >= 90) {
+    if (didLoseBig == 100) {
+      coins -= 14
+      outputText.innerHTML = "Critical Loss"
+    } else {
+      coins -= 8
+      outputText.innerHTML = "Bad Loss"
+    }
+  } else {
+    coins -= 3
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins < lowScore) {
+    lowScoreText.innerHTML = "Lowest Score: " + coins + " Coins"
+    lowScore = coins
+  }
+}
+function reset() {
+  coins = 0
+  coinText.innerHTML = "0 Coins"
+  wins = 0
+  losses = 0
+  winText.innerHTML = wins + " Wins"
+  lossText.innerHTML = losses + " Losses"
+  outputText.innerHTML = "Click a button to play!"
+}
+</script>
