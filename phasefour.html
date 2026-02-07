@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<head>
+<style>
+.coins {
+  color: gold;
+  font-size: 25px;
+  font-family: Courier;
+}
+.easy {
+  background-color: lime;
+  width: 80px;
+  height: 40px;
+  font-size: 20px;
+}
+.medium {
+  background-color: yellow;
+  width: 80px;
+  height: 40px;
+  font-size: 16px;
+}
+.hard {
+  background-color: red;
+  width: 80px;
+  height: 40px;
+  font-size: 20px;
+}
+.buttons {
+  margin: 15px;
+}
+.goldenDieText {
+  color: gold;
+  font-size: 20px;
+}
+</style>
+</head>
+<title>Upgrade Adventure</title>
+<body>
+<h1>Upgrade Adventure (Phase 4)</h1>
+<p class="coins" id="coinP"><b>0 Coins</b></p>
+<div class="buttons">
+  <button class="easy" onclick="buttonClicked(30)">Easy</button>
+  <button class="medium" onclick="buttonClicked(50)">Medium</button>
+  <button class="hard" onclick="buttonClicked(70)">Hard</button>
+</div>
+<div class="shop">
+  <button id="item1" onclick="buyLuckyCharm()" style="background: pink">Lucky Charm<br>25 Coins</button>
+  <button id="item2" onclick="buyCoinMagnet()" style="background: aqua">Coin Magnet<br>40 Coins</button>
+  <button id="item3" onclick="buyGoldenDie()" style="background: gold">Golden Die<br>75 Coins</button>
+  <button id="item4" onclick="buyShield()" style="background: green">Shield<br>30 Coins</button>
+  <button id="item5" onclick="buyRiskBooster()" style="background: purple">Risk Booster<br>50 Coins</button>
+</div>
+<p id="winP">0 Wins</p>
+<p id="lossP">0 Losses</p>
+<p id="winRate">Play a Game!</p>
+<p id="highScoreP">High Score: 0 Coins</p>
+<p id="goldenDieP" class="goldenDieText"></p>
+<button onclick="resetGame()" style="margin-top: 150px; color: white; background:darkred;">Reset</button>
+</body>
+</html>
+<script>
+var coins = 0
+var winChance = 90
+var highScore = 0
+var extraCoins = 0
+var multiplier = 1
+var chanceToSave = 0
+var shieldState = 0
+var wins = 0
+var losses = 0
+var winRate
+var coinText = document.getElementById("coinP")
+var highScoreText = document.getElementById("highScoreP")
+var luckyCharm = document.getElementById("item1")
+var coinMagnet = document.getElementById("item2")
+var goldenDie = document.getElementById("item3")
+var shield = document.getElementById("item4")
+var riskBooster = document.getElementById("item5")
+var winText = document.getElementById("winP")
+var lossText = document.getElementById("lossP")
+var winRateText = document.getElementById("winRate")
+var goldenDieText = document.getElementById("goldenDieP")
+
+function buyLuckyCharm() {
+  if (coins >= 25) {
+    coins -= 25
+    coinText.innerHTML = coins + " Coins"
+    luckyCharm.disabled = true
+    luckyCharm.innerHTML = "Lucky Charm <br> Bought"
+    winChance += 10
+  }
+}
+function buyCoinMagnet() {
+  if (coins >= 40) {
+    coins -= 40
+    coinText.innerHTML = coins + " Coins"
+    coinMagnet.disabled = true
+    coinMagnet.innerHTML = "Coin Magnet <br> Bought"
+    extraCoins += 2
+  }
+}
+function buyRiskBooster() {
+  if (coins >= 50) {
+    coins -= 50
+    coinText.innerHTML = coins + " Coins"
+    riskBooster.disabled = true
+    riskBooster.innerHTML = "Risk Booster <br> Bought"
+    multiplier += 1
+  }
+}
+function buyGoldenDie() {
+  if (coins >= 75) {
+    coins -= 75
+    coinText.innerHTML = coins + " Coins"
+    goldenDie.disabled = true
+    goldenDie.innerHTML = "Golden Die <br> Bought"
+    chanceToSave += 3
+  }
+}
+function buyShield() {
+  if (coins >= 30) {
+    coins -= 30
+    coinText.innerHTML = coins + " Coins"
+    shield.disabled = true
+    shield.innerHTML = "Shield <br> Bought"
+    shieldState += 3
+  }
+}
+function buttonClicked(dif) {
+  goldenDieText.innerHTML = ""
+  var random = (Math.random() * winChance)
+  if (dif == 30) {
+    if (random >= dif){
+      easyWin()
+    } else {
+      if (shieldState > 0) {
+        shieldState -= 1
+      } else {
+      easyLoss()
+      }
+    }
+  } else if (dif == 50) {
+    if (random >= dif) {
+      mediumWin()
+    } else {
+      if (shieldState > 0) {
+        shieldState -= 1
+      } else {
+        mediumLoss()
+      }
+    }
+  } else {
+    if (random >= dif) {
+      hardWin()
+    } else {
+      if (shieldState > 0) {
+        shieldState -= 1
+      } else {
+      hardLoss()
+      }
+    }
+  }
+}
+function easyWin() {
+  var bigWin = (Math.random() * 100)
+  if (bigWin >= 95) {
+    coins += 5 * multiplier
+    coins += extraCoins
+  } else {
+    coins += 1 * multiplier
+    coins += extraCoins
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins >= highScore) {
+  highScoreText.innerHTML = "High Score: " + coins + " Coins"
+  highScore = coins
+  }
+  wins += 1
+  winText.innerHTML = wins + " Wins"
+  winRate = Math.round((wins/(wins + losses) * 100))
+  winRateText.innerHTML = winRate + "% Win Rate"
+}
+function easyLoss() {
+  var bigLoss = (Math.random() * 100)
+  var goldenDieChance = (Math.random() * chanceToSave)
+  if (bigLoss >= 95) {
+    coins -= 4 * multiplier
+  } else {
+      if (goldenDieChance >= bigLoss) {
+        mediumWin()
+        goldenDieText.innerHTML = "Saved!!!"
+      } else {
+      coins -= 1 * multiplier
+      }
+  }
+  coinText.innerHTML = coins + " Coins"
+  losses += 1
+  lossText.innerHTML = losses + " Losses"
+  winRate = Math.round((wins/(wins + losses) * 100))
+  winRateText.innerHTML = winRate + "% Win Rate"
+  if (coins < 0) {
+    alert("You Went Bankrup")
+    resetGame()
+  }
+}
+function mediumWin() {
+  var bigWin = (Math.random() * 100)
+  if (bigWin >= 95) {
+    coins += 10 * multiplier
+    coins += extraCoins
+  } else {
+    coins += 3 * multiplier
+    coins += extraCoins
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins >= highScore) {
+  highScoreText.innerHTML = "High Score: " + coins + " Coins"
+  highScore = coins
+  }
+  wins += 1
+  winText.innerHTML = wins + " Wins"
+  winRate = Math.round((wins/(wins + losses) * 100))
+  winRateText.innerHTML = winRate + "% Win Rate"
+}
+function mediumLoss() {
+  var bigLoss = (Math.random() * 100)
+  var goldenDieChance = (Math.random() * chanceToSave)
+  if (bigLoss >= 95) {
+    coins -= 8 * multiplier
+  } else {
+      if (goldenDieChance >= bigLoss) {
+          mediumWin()
+          goldenDieText.innerHTML = "Saved!!!"
+        } else {
+        coins -= 2 * multiplier
+        }
+  }
+  coinText.innerHTML = coins + " Coins"
+  losses += 1
+  lossText.innerHTML = losses + " Losses"
+  winRate = Math.round((wins/(wins + losses) * 100))
+  winRateText.innerHTML = winRate + "% Win Rate"
+  if (coins < 0) {
+    alert("You Went Bankrup")
+    resetGame()
+  }
+}
+function hardWin() {
+  var bigWin = (Math.random() * 100)
+  if (bigWin >= 95) {
+    coins += 20 * multiplier
+    coins += extraCoins
+  } else {
+    coins += 6 * multiplier
+    coins += extraCoins
+  }
+  coinText.innerHTML = coins + " Coins"
+  if (coins >= highScore) {
+  highScoreText.innerHTML = "High Score: " + coins + " Coins"
+  highScore = coins
+  }
+  wins += 1
+  winText.innerHTML = wins + " Wins"
+  winRate = Math.round((wins/(wins + losses) * 100))
+  winRateText.innerHTML = winRate + "% Win Rate"
+}
+function hardLoss() {
+  var bigLoss = (Math.random() * 100)
+  var goldenDieChance = (Math.random() * chanceToSave)
+  if (bigLoss >= 95) {
+    coins -= 15 * multiplier
+  } else {
+      if (goldenDieChance >= bigLoss) {
+              mediumWin()
+              goldenDieText.innerHTML = "Saved!!!"
+            } else {
+            coins -= 4 * multiplier
+            }  }
+  coinText.innerHTML = coins + " Coins"
+  losses += 1
+  lossText.innerHTML = losses + " Losses"
+  winRate = Math.round((wins/(wins + losses) * 100))
+  winRateText.innerHTML = winRate + "% Win Rate"
+  if (coins < 0) {
+    alert("You Went Bankrup")
+    resetGame()
+  }
+}
+function resetGame() {
+  coins = 0
+  wins = 0
+  losses = 0
+  extraCoins = 0
+  multiplier = 1
+  winChance = 90
+  chanceToSave = 0
+  shieldState = 0
+  highScore = 0
+  riskBooster.disabled = false
+  luckyCharm.disabled = false
+  coinMagnet.disabled = false
+  goldenDie.disabled = false
+  shield.disabled = false
+  coinText.innerHTML = "0 Coins"
+  luckyCharm.innerHTML = "Lucky Charm <br> 25 Coins"
+  coinMagnet.innerHTML = "Coin Magnet <br> 40 Coins"
+  goldenDie.innerHTML = "Golden Die <br> 75 Coins"
+  shield.innerHTML = "Shield <br> 30 Coins"
+  riskBooster.innerHTML = "Risk Booster <br> 50 Coins"
+  winText.innerHTML = "0 Wins"
+  lossText.innerHTML = "0 Losses"
+  highScoreText.innerHTML = "High Score: 0 Coins"
+}
+
+</script>
