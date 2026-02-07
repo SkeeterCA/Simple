@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<head>
+<style>
+body {
+  background-color: lightblue;
+}
+h1 {
+  color: navy;
+  font-size: 25px;
+  font-family: Comic Sans MS;
+}
+.sliderText {
+  font-size: 30px;
+  margin-block: 0px;
+}
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: gray;
+  opacity: 95%;
+  width: 505px;
+  outline: none;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 100px;
+  width: 10px;
+  background: black;
+  cursor: pointer;
+}
+.stats {
+  font-size: 20px;
+}
+</style>
+</head>
+<body>
+  <h1 class="hover">Project #2 (Similar but improved)</h1>
+  <div class="sidecontainer">
+    <input type="range" min="1" max="100" value="50" class="slider" id="range">
+    <p id="sliderOutput" class="sliderText">50</p>
+  </div>
+  <div>
+    <button onclick="gameplay(20)" style="background-color: red">Easy</button>
+    <button onclick="gameplay(50)" style="background-color: yellow">Medium</button>
+    <button onclick="gameplay(80)" style="background-color: green">Hard</button>
+  </div>
+  <p id="outcome"></p>
+  <div class="stats">
+    <p id="wins"></p>
+    <p id="losses"></p>
+    <p id="winningPercentage"></p>
+    <button onclick="resetStats()">Reset Stats</button>
+  </div>
+</body>
+</html>
+<script>
+var slider = document.getElementById("range")
+var output = document.getElementById("sliderOutput")
+var wins = 0
+var losses = 0
+var winningPercentage
+output.innerHTML = slider.value
+function gameplay(numToBeat) {
+  var winningNumber = Number(slider.value)
+  if (numToBeat < winningNumber) {
+    document.getElementById("outcome").innerHTML = "Win";
+    wins += 1
+    if (wins != 1){
+      document.getElementById("wins").innerHTML = wins + " wins"
+    } else {
+      document.getElementById("wins").innerHTML = wins + " win"
+    }
+  } else {
+    document.getElementById("outcome").innerHTML = "Lose";
+    losses += 1
+    if (losses != 1){
+      document.getElementById("losses").innerHTML = losses + " losses"
+    } else {
+      document.getElementById("losses").innerHTML = losses + " loss"
+    }
+  }
+  winningPercentage = Math.round(wins / (wins + losses) * 100) + "%"
+  document.getElementById("winningPercentage").innerHTML = winningPercentage
+}
+function resetStats() {
+  wins = 0
+  losses = 0
+  winningPercentage = 0
+  document.getElementById("wins").innerHTML = ""
+  document.getElementById("losses").innerHTML = ""
+  document.getElementById("winningPercentage").innerHTML = ""
+  document.getElementById("outcome").innerHTML = ""
+  slider.value = 50
+  output.innerHTML = 50
+}
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+</script>
