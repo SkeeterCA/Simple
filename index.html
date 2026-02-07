@@ -1,1 +1,30 @@
-
+<!DOCTYPE html>
+<head>
+<h1>This is a simple project to hopefully start my career as a programmer</h1>
+</head>
+<body>
+  <h2>Choose your chances </h2>
+  <input type="range" min="1" max="100" value="50" class="slider" id="Range">
+  <p id="sliderValue">50</p>
+  <br>
+  <button onclick="findIt()">Calculate</button>
+  <p id="Result">You.....</p>
+</body>
+</html>
+<script>
+var slider = document.getElementById("Range")
+var output = document.getElementById("sliderValue")
+function findIt() {
+  let range = slider.value
+  let randomNum = (Math.random() * 100);
+  if (randomNum < range) {
+    document.getElementById("Result").innerHTML = "You Win!";
+  } else {
+    document.getElementById("Result").innerHTML = "You Lose :(";
+  }
+}
+slider.oninput = function() {
+  output.innerHTML = this.value
+}
+</script>
+</html>
