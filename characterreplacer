@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Character Replacer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      margin-bottom: 20px;
+    }
+    input.replace {
+      width: 30px;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    #output {
+      background: #f0f0f0;
+      padding: 10px;
+      min-height: 30px;
+    }
+    button {
+      padding: 5px 15px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Character Replacer</h1>
+
+<table>
+  <tr>
+    <td>a</td><td><input class="replace" data-from="a" placeholder="a"></td>
+    <td>b</td><td><input class="replace" data-from="b" placeholder="b"></td>
+    <td>c</td><td><input class="replace" data-from="c" placeholder="c"></td>
+    <td>d</td><td><input class="replace" data-from="d" placeholder="d"></td>
+    <td>e</td><td><input class="replace" data-from="e" placeholder="e"></td>
+    <td>f</td><td><input class="replace" data-from="f" placeholder="f"></td>
+  </tr>
+  <tr>
+    <td>g</td><td><input class="replace" data-from="g" placeholder="g"></td>
+    <td>h</td><td><input class="replace" data-from="h" placeholder="h"></td>
+    <td>i</td><td><input class="replace" data-from="i" placeholder="i"></td>
+    <td>j</td><td><input class="replace" data-from="j" placeholder="j"></td>
+    <td>k</td><td><input class="replace" data-from="k" placeholder="k"></td>
+    <td>l</td><td><input class="replace" data-from="l" placeholder="l"></td>
+  </tr>
+  <tr>
+    <td>m</td><td><input class="replace" data-from="m" placeholder="m"></td>
+    <td>n</td><td><input class="replace" data-from="n" placeholder="n"></td>
+    <td>o</td><td><input class="replace" data-from="o" placeholder="o"></td>
+    <td>p</td><td><input class="replace" data-from="p" placeholder="p"></td>
+    <td>q</td><td><input class="replace" data-from="q" placeholder="q"></td>
+    <td>r</td><td><input class="replace" data-from="r" placeholder="r"></td>
+  </tr>
+  <tr>
+    <td>s</td><td><input class="replace" data-from="s" placeholder="s"></td>
+    <td>t</td><td><input class="replace" data-from="t" placeholder="t"></td>
+    <td>u</td><td><input class="replace" data-from="u" placeholder="u"></td>
+    <td>v</td><td><input class="replace" data-from="v" placeholder="v"></td>
+    <td>w</td><td><input class="replace" data-from="w" placeholder="w"></td>
+    <td>x</td><td><input class="replace" data-from="x" placeholder="x"></td>
+  </tr>
+  <tr>
+    <td>y</td><td><input class="replace" data-from="y" placeholder="y"></td>
+    <td>z</td><td><input class="replace" data-from="z" placeholder="z"></td>
+  </tr>
+</table>
+
+<p>Type your text:</p>
+<textarea id="inputText" placeholder="Type Here"></textarea>
+
+<h3>Output:</h3>
+<div id="output"></div>
+
+<button onclick="resetAll()">Reset</button>
+
+<script>
+function replaceText() {
+  var text = document.getElementById("inputText").value;
+  var inputs = document.querySelectorAll(".replace");
+
+  // Build a map of replacements first
+  var map = {};
+  inputs.forEach(input => {
+    var from = input.dataset.from;
+    var to = input.value || from; // use original if blank
+    map[from] = to;
+    map[from.toUpperCase()] = to.toUpperCase(); // also handle uppercase letters
+  });
+
+  // Replace each character safely
+  var result = text.split("").map(char => map[char] || char).join("");
+
+  document.getElementById("output").textContent = result;
+}
+
+// Live updates
+document.getElementById("inputText").oninput = replaceText;
+document.querySelectorAll(".replace").forEach(input => {
+  input.oninput = replaceText;
+});
+
+// Reset everything
+function resetAll() {
+  document.getElementById("inputText").value = "";
+  document.getElementById("output").textContent = "";
+  document.querySelectorAll(".replace").forEach(input => {
+    input.value = "";
+  });
+}
+</script>
+
+
+</body>
+</html>
